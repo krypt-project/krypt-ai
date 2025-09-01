@@ -1,0 +1,5 @@
+flask
+sentence-transformers
+torch
+pyjwt
+python-dotenv
