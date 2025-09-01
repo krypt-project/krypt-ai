@@ -7,6 +7,8 @@ from jwt import InvalidTokenError
 
 dotenv.load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
+if not SECRET_KEY:
+    raise RuntimeError("SECRET_KEY is not set! Check your .env file.")
 
 def require_scope(required_scope):
     def decorator(func):
