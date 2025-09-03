@@ -4,6 +4,7 @@ import dotenv
 
 from flask import request, jsonify
 from jwt import InvalidTokenError
+from functools import wraps
 
 dotenv.load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -12,6 +13,7 @@ if not SECRET_KEY:
 
 def require_scope(required_scope):
     def decorator(func):
+        @wraps(func)
         def wrapper(*args, **kwargs):
             auth_header = request.headers.get("Authorization")
             if not auth_header or not auth_header.startswith("Bearer "):
