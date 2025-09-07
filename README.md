@@ -1,1 +1,1 @@
-# mindvault-moduleAI
+# krypt-ai
