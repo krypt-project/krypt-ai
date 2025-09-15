@@ -26,5 +26,5 @@ def generate_summary():
         return jsonify({"summary": summary.strip()})
     except Exception as e:
         import traceback
-        print("🔥 ERROR in /generate-summary:", traceback.format_exc())  # log complet dans la console
+        print("ERROR in /generate-summary:", traceback.format_exc())
         return jsonify({"error": str(e)}), 500
