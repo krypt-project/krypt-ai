@@ -1,5 +1,6 @@
 flask
-sentence-transformers
-torch
-pyjwt
+flask-cors
 python-dotenv
+pyjwt
+psycopg2-binary
+sentence-transformers
