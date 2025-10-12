@@ -1,15 +1,10 @@
 from flask import Blueprint, request, jsonify
-from transformers import pipeline
+from google import genai
+from google.genai import types
 from utils.auth import require_scope
 
 chatbot_bp = Blueprint("chatbot", __name__)
-
-# Chargement du modèle globalement (évite de recharger à chaque requête)
-generator = pipeline(
-    "text-generation",
-    model="mistralai/Mistral-7B-Instruct-v0.2",
-    device_map="auto"
-)
+client = genai.Client(api_key="AIzaSyBFfccQO2zSwr_RGUD8cBryMKd-Yp8bkY0")
 
 @chatbot_bp.route("/chatbot", methods=["POST"])
 @require_scope("chatbot:generate")
@@ -21,27 +16,17 @@ def chatbot():
         return jsonify({"error": "Message vide"}), 400
 
     try:
-        # Préparer le prompt pour un comportement type "assistant"
-        prompt = f"Utilisateur: {user_message}\nAssistant:"
+        # Génération du texte avec Gemini Flash
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=[user_message],
+            config=types.GenerateContentConfig(
+                temperature=0.7,
+                # thinking_config=types.ThinkingConfig(thinking_budget=0)  # désactive réflexion
+            )
+        )
 
-        response = generator(
-            prompt,
-            max_new_tokens=800,
-            do_sample=True,
-            temperature=0.7,
-            top_p=0.9,
-            repetition_penalty=1.1,
-            num_return_sequences=1,
-            truncation=True
-        )[0]["generated_text"]
-
-        # Nettoyage : on garde seulement le texte après "Assistant:"
-        if "Assistant:" in response:
-            clean_resp = response.split("Assistant:", 1)[-1].strip()
-        else:
-            clean_resp = response[len(user_message):].strip()
-
-        return jsonify({"reply": clean_resp})
+        return jsonify({"reply": response.text})
 
     except Exception as e:
         import traceback
