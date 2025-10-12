@@ -3,8 +3,7 @@ from transformers import pipeline
 from utils.auth import require_scope
 
 summary_bp = Blueprint('summarize', __name__)
-
-summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+summarizer = pipeline("summarization", model="facebook/bart-large-cnn", device=-1)
 
 @summary_bp.route('/generate-summary', methods=['POST'])
 @require_scope("notes:summarize")
