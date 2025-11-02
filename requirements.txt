@@ -1,0 +1,9 @@
+flask
+flask-cors
+python-dotenv
+pyjwt
+psycopg2-binary
+sentence-transformers
+transformers
+torch
+google-genai
