@@ -4,7 +4,7 @@ from utils.auth import require_scope
 import math
 
 summary_bp = Blueprint('summarize', __name__)
-summarizer = pipeline("summarization", model="facebook/bart-large-cnn", device=0)
+summarizer = pipeline("summarization", model="facebook/bart-large-cnn", device=-1)
 
 MAX_TOKENS = 1022  # Limite de BART-large-CNN
 

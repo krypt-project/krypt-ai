@@ -36,7 +36,7 @@ def get_all_tags():
 tags_bp = Blueprint("tags", __name__)
 
 # Charging modele
-model = SentenceTransformer("all-mpnet-base-v2", device="cuda")
+model = SentenceTransformer("all-mpnet-base-v2")
 
 # Hyperparameters
 THRESHOLD = 0.4
